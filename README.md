@@ -6,7 +6,7 @@ An open-source project exploring practical ways to make building, testing, and d
 
 ## Documentation
 
-Start at the [documentation website](docs/index.html) for the project overview, contribution paths, current status, and safety guidance. The documentation can be published with GitHub Pages by selecting **Deploy from a branch**, the `main` branch, and the `/docs` folder in the repository's Pages settings.
+Visit the **[Soroban Dev Tools documentation website](https://northbound-dev.github.io/soroban-dev-tools/)** for the project overview, contribution paths, current status, and safety guidance. The page source is in [`docs/index.html`](docs/index.html).
 
 | Area | Description |
 | --- | --- |
