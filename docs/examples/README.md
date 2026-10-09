@@ -1,35 +1,16 @@
-# Examples
+# Soroban examples
 
-Examples showing how to use the Soroban Dev Tools utilities.
+There are no runnable examples in this directory yet. The example commands previously listed here referred to tools that are not part of this repository; they have been removed to avoid implying that those commands are available.
 
-## Example 1: Creating a New Contract
+## Adding an example
 
-```bash
-# Using the CLI initializer
-soroban-cli init my-contract
-cd my-contract
-```
+Keep each example small enough to follow from a clean checkout of the example itself. Include:
 
-## Example 2: Testing a Contract
+- The problem the example demonstrates and what the reader will learn.
+- Exact prerequisites and versions, including whether the Stellar CLI is needed.
+- Complete source files or a link to a pinned, maintained source revision.
+- Commands to build and test, with expected results.
+- Whether it uses a local environment or Stellar testnet.
+- Clear warnings for any network action, cost, or credential requirement.
 
-```bash
-# Run unit tests
-soroban-test run
-
-# Or with specific test suite
-soroban-test run --suite=integration
-```
-
-## Example 3: Deploying to Testnet
-
-```bash
-# Deploy to Stellar testnet
-soroban-deploy --network testnet --contract my-contract.wasm
-```
-
-## Example 4: Analyzing Gas Usage
-
-```bash
-# Get gas usage report
-soroban-gas-analyze --contract my-contract.wasm
-```
+Verify the commands with the current documented tool versions before submitting. Never include account secrets or tell readers to deploy an unaudited example to mainnet. See the [deployment safety requirements](../../deployment/README.md).

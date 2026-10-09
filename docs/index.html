@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Project documentation, contribution paths, and safety guidance for Soroban Dev Tools.">
+  <meta name="theme-color" content="#101c2c">
+  <title>Soroban Dev Tools — Documentation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172536;
+      --muted: #526174;
+      --paper: #f5f7fa;
+      --surface: #fff;
+      --line: #dce3ea;
+      --blue: #155eef;
+      --navy: #101c2c;
+      --mint: #c6f6dd;
+      --max: 1080px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: var(--blue); text-underline-offset: 0.2em; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible { outline: 3px solid #ffbf47; outline-offset: 3px; }
+
+    .skip-link {
+      position: absolute;
+      top: -4rem;
+      left: 1rem;
+      z-index: 2;
+      padding: 0.65rem 1rem;
+      background: var(--surface);
+    }
+    .skip-link:focus { top: 1rem; }
+
+    .wrap { width: min(var(--max), calc(100% - 2.5rem)); margin-inline: auto; }
+
+    header {
+      background: var(--navy);
+      color: #f6f8fb;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-block: 1.2rem;
+      border-bottom: 1px solid #ffffff24;
+    }
+
+    .brand { color: inherit; font-weight: 750; text-decoration: none; letter-spacing: -0.02em; }
+    nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    nav a { color: #d4dfec; font-size: 0.92rem; text-decoration: none; }
+    nav a:hover { color: #fff; }
+
+    .hero { padding-block: clamp(3.5rem, 9vw, 7rem); }
+    .eyebrow { color: var(--mint); font-size: 0.8rem; font-weight: 750; letter-spacing: 0.13em; text-transform: uppercase; }
+    h1, h2, h3 { line-height: 1.2; letter-spacing: -0.035em; }
+    h1 { max-width: 780px; margin: 0.8rem 0 1rem; font-size: clamp(2.6rem, 7vw, 5rem); }
+    .hero p { max-width: 680px; color: #d4dfec; font-size: clamp(1.05rem, 2vw, 1.25rem); }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+    .button {
+      display: inline-block;
+      padding: 0.72rem 1rem;
+      border: 1px solid #ffffff6b;
+      border-radius: 0.45rem;
+      color: #fff;
+      font-weight: 650;
+      text-decoration: none;
+    }
+    .button.primary { border-color: var(--mint); background: var(--mint); color: var(--navy); }
+
+    main { padding-block: 2rem 5rem; }
+    .notice {
+      margin-block: 0 3.5rem;
+      padding: 1.2rem 1.4rem;
+      border: 1px solid #e9cc77;
+      border-radius: 0.6rem;
+      background: #fff9e8;
+    }
+    .notice strong { display: block; margin-bottom: 0.25rem; }
+    .notice p { margin: 0; color: #514827; }
+
+    section { margin-top: 4rem; scroll-margin-top: 1rem; }
+    .section-heading { max-width: 720px; margin-bottom: 1.5rem; }
+    h2 { margin: 0 0 0.6rem; font-size: clamp(1.8rem, 4vw, 2.55rem); }
+    h3 { margin: 0 0 0.55rem; font-size: 1.18rem; }
+    .lead, .muted { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .card {
+      padding: 1.35rem;
+      border: 1px solid var(--line);
+      border-radius: 0.65rem;
+      background: var(--surface);
+    }
+    .card p { margin: 0.4rem 0 1rem; color: var(--muted); }
+    .card a { font-weight: 650; }
+
+    .steps { padding-left: 1.3rem; }
+    .steps li { padding: 0.25rem 0 0.65rem 0.35rem; }
+    .steps strong { color: var(--ink); }
+    .safe {
+      padding: 1.25rem 1.5rem;
+      border-left: 4px solid #14804a;
+      background: #eaf8f0;
+    }
+    .safe p { margin: 0.35rem 0 0; }
+
+    footer { padding-block: 1.5rem; background: var(--navy); color: #d4dfec; }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; }
+    footer p { margin: 0; }
+    footer a { color: var(--mint); }
+
+    @media (max-width: 640px) {
+      .wrap { width: min(100% - 1.5rem, var(--max)); }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      nav { gap: 0.9rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="#top">Soroban Dev Tools</a>
+        <nav aria-label="Main navigation">
+          <a href="#areas">Project areas</a>
+          <a href="#contribute">Contribute</a>
+          <a href="#safety">Safety</a>
+          <a href="https://github.com/Northbound-Dev/soroban-dev-tools">GitHub</a>
+        </nav>
+      </div>
+      <div class="hero" id="top">
+        <span class="eyebrow">Community tooling for Stellar</span>
+        <h1>Make Soroban development easier to build on.</h1>
+        <p>A community project for practical tools, clear examples, and safer workflows around Soroban smart-contract development.</p>
+        <div class="actions">
+          <a class="button primary" href="#contribute">Find a contribution</a>
+          <a class="button" href="https://github.com/Northbound-Dev/soroban-dev-tools">Explore the repository</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="main">
+    <div class="notice" role="status">
+      <strong>Project status: documentation-first scaffold</strong>
+      <p>This repository does not yet contain an installable package, executable CLI, deployment scripts, testing framework, or runnable contract examples. The guides below describe contribution areas—not released features. Work with maintainers to define and implement a first useful tool.</p>
+    </div>
+
+    <section id="areas">
+      <div class="section-heading">
+        <h2>Explore the project</h2>
+        <p class="lead">Choose a focused area and begin by agreeing on the problem, interface, and acceptance criteria in an issue.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Command-line utilities</h3>
+          <p>Ideas for useful developer workflows, with clear installation, supported versions, and safe argument handling.</p>
+          <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/cli/README.md">Read CLI contribution guidance</a>
+        </article>
+        <article class="card">
+          <h3>Contract testing</h3>
+          <p>Explore repeatable local tests and fixtures that complement the existing Soroban toolchain.</p>
+          <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/testing/README.md">Read testing contribution guidance</a>
+        </article>
+        <article class="card">
+          <h3>Deployment workflows</h3>
+          <p>Potential helpers for predictable deployments, with explicit network selection and credential safety.</p>
+          <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/deployment/README.md">Read deployment safety guidance</a>
+        </article>
+        <article class="card">
+          <h3>Examples and documentation</h3>
+          <p>Small, reproducible examples can make the ecosystem more approachable—provided commands are verified.</p>
+          <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/docs/examples/README.md">Read the example contribution guide</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contribute">
+      <div class="section-heading">
+        <h2>How to contribute</h2>
+        <p class="lead">Contributions are most useful when they solve an agreed problem and can be verified by someone else.</p>
+      </div>
+      <ol class="steps">
+        <li><strong>Pick a user problem.</strong> Read the area guide and look for an existing issue before starting.</li>
+        <li><strong>Agree on the outcome.</strong> Open an issue with the target user, proposed behavior, supported environment, and a small definition of done.</li>
+        <li><strong>Build and verify.</strong> Keep the change focused; include tests for executable behavior and check commands in a clean environment.</li>
+        <li><strong>Document honestly.</strong> Update setup, versions, limitations, and safety notes. Clearly distinguish implemented features from proposals.</li>
+        <li><strong>Open a pull request.</strong> Explain the problem, change, and verification performed. See the full <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/CONTRIBUTING.md">contribution guide</a>.</li>
+      </ol>
+      <p><a href="https://github.com/Northbound-Dev/soroban-dev-tools/issues">Browse repository issues on GitHub</a></p>
+    </section>
+
+    <section id="safety">
+      <div class="section-heading">
+        <h2>Safe by default</h2>
+        <p class="lead">Developer tooling should make important network and credential boundaries clear.</p>
+      </div>
+      <div class="safe">
+        <strong>Use local development or Stellar testnet for examples.</strong>
+        <p>Never commit secret keys, seed phrases, or credentials. Make network actions explicit, explain transaction costs and permissions, and do not describe tests as a security audit or an unaudited example as production-ready. See the <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/deployment/README.md">deployment safety requirements</a>.</p>
+      </div>
+    </section>
+
+    <section id="setup">
+      <div class="section-heading">
+        <h2>Get started</h2>
+        <p class="lead">The repository itself is documentation-only and has no install step. A contribution may have its own requirements; state them in that feature's guide.</p>
+      </div>
+      <div class="card">
+        <p>Clone the repository and read the contribution guide. Install Rust or the <a href="https://developers.stellar.org/docs/tools/stellar-cli">Stellar CLI</a> only when needed for the feature you are working on.</p>
+        <p><code>git clone https://github.com/Northbound-Dev/soroban-dev-tools.git</code></p>
+        <a href="https://github.com/Northbound-Dev/soroban-dev-tools">Read the repository overview</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Soroban Dev Tools · Open source under the MIT License</p>
+      <p><a href="https://github.com/Northbound-Dev/soroban-dev-tools">GitHub repository</a> · <a href="https://github.com/Northbound-Dev/soroban-dev-tools/blob/main/LICENSE">License</a></p>
+    </div>
+  </footer>
+</body>
+</html>

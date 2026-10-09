@@ -1,63 +1,36 @@
 # Soroban Dev Tools
 
-A collection of development utilities for creating, testing, and deploying Soroban smart contracts on the Stellar network.
+An open-source project exploring practical ways to make building, testing, and deploying Soroban smart contracts easier.
 
-## Overview
+> **Project status:** This repository is currently a documentation-first scaffold. It does not yet contain an installable package, CLI, deployment scripts, or runnable contract-testing utilities. The directories describe areas where focused, useful contributions can grow the project.
 
-This repository provides tools and utilities to streamline Soroban smart contract development, including:
-- Contract compilation and deployment helpers
-- Testing frameworks and utilities
-- Deployment scripts for different networks
-- Debugging and monitoring tools
-- Code generation and scaffolding utilities
+## Documentation
 
-## Getting Started
+Start at the [documentation website](docs/index.html) for the project overview, contribution paths, current status, and safety guidance. The documentation can be published with GitHub Pages by selecting **Deploy from a branch**, the `main` branch, and the `/docs` folder in the repository's Pages settings.
 
-### Prerequisites
+| Area | Description |
+| --- | --- |
+| [CLI](cli/README.md) | Scope and acceptance guidance for future command-line utilities |
+| [Testing](testing/README.md) | Scope and acceptance guidance for future contract-testing tools |
+| [Deployment](deployment/README.md) | Scope and safety expectations for future deployment helpers |
+| [Examples](docs/examples/README.md) | Guidance for adding verifiable Soroban examples |
+| [Contributing](CONTRIBUTING.md) | How to propose, implement, and review changes |
 
-- [Rust](https://www.rust-lang.org/tools/install) (for Soroban CLI)
-- [Stellar Soroban CLI](https://developers.stellar.org/docs/build/smart-contracts/cli/install)
-- [Node.js](https://nodejs.org/) (for JavaScript/TypeScript utilities)
-- [Git](https://git-scm.com/)
+## Getting started
 
-### Installation
+This repository has no runtime dependencies or installation step. To explore it:
 
 ```bash
-# Clone the repository
 git clone https://github.com/Northbound-Dev/soroban-dev-tools.git
 cd soroban-dev-tools
-
-# Install dependencies (if any)
-# Add specific installation instructions here
 ```
 
-## Usage
-
-Add usage instructions for each tool/utility in this repository.
+If you are contributing a tool or example that interacts with Soroban, install the current [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli) and the toolchain required by that contribution. Keep setup instructions specific to the feature; do not assume every contributor needs Rust, Node.js, or a network account.
 
 ## Contributing
 
-We welcome contributions to make Soroban development easier for everyone! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
-
-## Why This Project is Suitable for Drips Network Wave
-
-This project is designed to support the Stellar/Soroban ecosystem by providing utilities that:
-- Reduce barriers to entry for new Soroban developers
-- Improve developer productivity and code quality
-- Enable faster iteration and testing of smart contracts
-- Provide shared tooling that benefits the entire ecosystem
-
-The modular nature of these utilities makes them ideal for contribution sprints, where developers can:
-- Add new utilities for specific use cases
-- Improve existing tools with better documentation or features
-- Create examples and tutorials
-- Add support for additional networks or deployment targets
-- Improve testing capabilities and test coverage
+Small, reviewable contributions are welcome. Start with the [contribution guide](CONTRIBUTING.md), describe the user problem and proposed outcome in an issue, and agree on scope before building a new tool. Documentation and reproducible examples are valuable contributions too.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For questions or suggestions, please open an issue on this repository.
+This project is licensed under the [MIT License](LICENSE).

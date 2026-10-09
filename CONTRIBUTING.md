@@ -1,71 +1,32 @@
-# Contributing to Soroban Dev Tools
+# Contributing
 
-Thank you for considering contributing to Soroban Dev Tools! We welcome contributions from the community to help improve Soroban smart contract development utilities.
+Thank you for helping make Soroban development easier. This repository is currently a documentation-first scaffold, so please distinguish existing functionality from proposals: there is no package to install and no project-wide test suite yet.
 
-## How to Contribute
+## Before you start
 
-There are many ways to contribute to this project:
+1. Read the relevant area guide: [CLI](cli/README.md), [testing](testing/README.md), [deployment](deployment/README.md), or [examples](docs/examples/README.md).
+2. Open an issue describing the user problem, who it affects, and a small, testable outcome. For a new tool, first agree on its interface, supported environment, and maintenance expectations.
+3. Avoid overlapping work by checking existing issues and pull requests before starting.
 
-1. **Report bugs** - Open an issue describing the problem
-2. **Suggest features** - Open an issue with your idea
-3. **Improve documentation** - Help make our docs clearer and more comprehensive
-4. **Fix bugs** - Submit a pull request with a fix
-5. **Add new features** - Implement new utilities or improvements
-6. **Add examples** - Show how to use the tools in real-world scenarios
+## Make a change
 
-## Getting Started
+1. Fork the repository and create a focused branch.
+2. Keep changes small and explain any new dependencies or supported platforms.
+3. Update the relevant guide whenever a feature, command, requirement, or limitation changes.
+4. Verify every documented command against the stated tool version and a clean environment. Do not document placeholder commands as working features.
+5. For contract or deployment examples, use a local environment or Stellar testnet. Never include secret keys, seed phrases, tokens, or real account credentials.
+6. Review the rendered Markdown and links, then open a pull request with the problem, solution, verification performed, and any known limitations.
 
-1. Fork this repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/soroban-dev-tools.git`
-3. Create a branch: `git checkout -b feature-or-fix-name`
-4. Make your changes
-5. Commit your changes: `git commit -m "Description of changes"`
-6. Push to your fork: `git push origin feature-or-fix-name`
-7. Open a pull request
+## Pull request expectations
 
-## Development Setup
+- Address one concern per pull request where practical.
+- Include tests for executable behavior. If a change is documentation-only, say so and check its links and examples.
+- Keep user-facing documentation accurate about what is implemented, planned, and not supported.
+- Do not claim mainnet readiness, security guarantees, or compatibility that has not been independently verified.
+- Respond to review feedback and keep the pull request focused.
 
-After cloning the repository, you'll need to set up your development environment. Specific setup instructions will depend on the utilities you're working on.
+## Reporting a bug or proposing a feature
 
-## Code Style
+Include the affected tool and version (if applicable), environment, expected and actual behavior, and minimal reproduction steps. For feature proposals, explain the target user and why existing Stellar/Soroban tooling does not already meet the need.
 
-Please follow the existing code style in the repository. We recommend using:
-- Consistent indentation (2 spaces or tabs, matching existing files)
-- Clear, descriptive variable and function names
-- Comments for complex logic
-- Following language-specific best practices
-
-## Pull Request Process
-
-1. Ensure your code builds and passes any tests
-2. Update documentation as needed
-3. The PR description should clearly explain what changes were made and why
-4. Keep PRs focused on a single concern when possible
-5. Be responsive to feedback during review
-
-## Reporting Bugs
-
-When reporting a bug, please include:
-- A clear description of the issue
-- Steps to reproduce the problem
-- Expected vs actual behavior
-- Any relevant error messages or logs
-- Your environment (OS, tool versions, etc.)
-
-## Feature Requests
-
-When suggesting a feature, please consider:
-- How it aligns with the project's goal of improving Soroban development
-- Whether it's broadly useful or very specific to one use case
-- Any potential dependencies or requirements
-- Whether you'd be willing to help implement it
-
-## Community
-
-Please be respectful and considerate of others when contributing. We aim to maintain a welcoming and inclusive community.
-
-## License
-
-By contributing to Soroban Dev Tools, you agree that your contributions will be licensed under the MIT License.
-
-Thank you for helping make Soroban development better for everyone!
+By contributing, you agree that your contributions are provided under the [MIT License](LICENSE).

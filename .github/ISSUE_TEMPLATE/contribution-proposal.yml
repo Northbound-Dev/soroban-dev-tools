@@ -1,0 +1,55 @@
+name: Contribution proposal
+description: Propose a focused improvement to Soroban Dev Tools
+title: "[Proposal]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is currently a documentation-first scaffold. Check the existing guides and issues before proposing a new tool, and distinguish proposed behavior from functionality that exists today.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and target user
+      description: Who has this problem, and what are they trying to do?
+      placeholder: Describe the user need, not just the implementation idea.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Proposed outcome and non-goals
+      description: What should be possible after this work, and what should remain out of scope?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable, verifiable conditions for considering the work complete.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Project area
+      options:
+        - CLI
+        - Testing
+        - Deployment
+        - Examples or documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Prerequisites and compatibility
+      description: Note expected tools, versions, platforms, or upstream dependencies, if known.
+  - type: textarea
+    id: safety
+    attributes:
+      label: Network, security, or credential considerations
+      description: Describe any network access, transaction, permission, or secret-handling implications.
