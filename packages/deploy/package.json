@@ -1,0 +1,36 @@
+{
+  "name": "@soroban-dev/deploy",
+  "version": "0.1.0",
+  "description": "Contract deployment and upgrade workflows for Soroban.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@soroban-dev/client": "workspace:*",
+    "@soroban-dev/errors": "workspace:*",
+    "@soroban-dev/types": "workspace:*",
+    "@soroban-dev/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "8.3.5",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8"
+  }
+}

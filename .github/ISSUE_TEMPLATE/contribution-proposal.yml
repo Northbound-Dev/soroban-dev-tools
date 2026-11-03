@@ -1,55 +1,52 @@
-name: Contribution proposal
-description: Propose a focused improvement to Soroban Dev Tools
-title: "[Proposal]: "
+name: Contribution Proposal
+description: Propose a new feature, package, or improvement to Soroban Dev Tools
+title: "[Proposal] "
+labels: ["proposal", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        This repository is currently a documentation-first scaffold. Check the existing guides and issues before proposing a new tool, and distinguish proposed behavior from functionality that exists today.
+        Thanks for proposing a contribution. Please fill in the sections below
+        so maintainers can evaluate scope, fit, and priority before work starts.
+
   - type: textarea
     id: problem
     attributes:
-      label: Problem and target user
-      description: Who has this problem, and what are they trying to do?
-      placeholder: Describe the user need, not just the implementation idea.
+      label: Problem / motivation
+      description: What developer problem does this solve? Who is affected?
+      placeholder: "When building a Soroban contract I need to … but currently …"
     validations:
       required: true
+
   - type: textarea
-    id: outcome
+    id: proposal
     attributes:
-      label: Proposed outcome and non-goals
-      description: What should be possible after this work, and what should remain out of scope?
+      label: Proposed solution
+      description: Describe what you want to build and how it would work.
     validations:
       required: true
+
   - type: textarea
-    id: acceptance
+    id: package
     attributes:
-      label: Acceptance criteria
-      description: List observable, verifiable conditions for considering the work complete.
-      placeholder: |
-        - [ ] ...
-        - [ ] ...
+      label: Affected package(s)
+      description: Which package(s) under `packages/` would this touch, or is a new package needed?
     validations:
       required: true
-  - type: dropdown
-    id: area
+
+  - type: textarea
+    id: alternatives
     attributes:
-      label: Project area
+      label: Alternatives considered
+      description: What other approaches did you consider? Why is this the right one?
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
       options:
-        - CLI
-        - Testing
-        - Deployment
-        - Examples or documentation
-        - Other
-    validations:
-      required: true
-  - type: textarea
-    id: dependencies
-    attributes:
-      label: Prerequisites and compatibility
-      description: Note expected tools, versions, platforms, or upstream dependencies, if known.
-  - type: textarea
-    id: safety
-    attributes:
-      label: Network, security, or credential considerations
-      description: Describe any network access, transaction, permission, or secret-handling implications.
+        - label: I searched existing issues and PRs for duplicates
+          required: true
+        - label: This is scoped to a single concern
+          required: true
+        - label: I am willing to implement this myself (or help review a PR)

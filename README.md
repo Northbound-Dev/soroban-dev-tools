@@ -1,36 +1,67 @@
-# Soroban Dev Tools
+# soroban-dev-tools
 
-An open-source project exploring practical ways to make building, testing, and deploying Soroban smart contracts easier.
+[![CI](https://github.com/Northbound-Dev/soroban-dev-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/Northbound-Dev/soroban-dev-tools/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Stellar](https://img.shields.io/badge/Built%20on-Stellar-7C3AED)](https://stellar.org)
+[![Drips Wave](https://img.shields.io/badge/Drips-Stellar%20Wave-blue)](https://www.drips.network/wave/stellar)
 
-> **Project status:** This repository is currently a documentation-first scaffold. It does not yet contain an installable package, CLI, deployment scripts, or runnable contract-testing utilities. The directories describe areas where focused, useful contributions can grow the project.
+> TypeScript toolkit for building, testing, and deploying **Soroban smart contracts** on Stellar.
+> Built for the [Drips Stellar Wave Program](https://www.drips.network/wave/stellar).
 
-## Documentation
+`soroban-dev-tools` is a TypeScript pnpm monorepo that provides typed clients,
+contract helpers, a CLI, React hooks, and testing utilities so developers can
+integrate Soroban into their own applications and development workflows.
 
-Visit the **[Soroban Dev Tools documentation website](https://northbound-dev.github.io/soroban-dev-tools/)** for the project overview, contribution paths, current status, and safety guidance. The page source is in [`docs/index.html`](docs/index.html).
+## Packages
 
-| Area | Description |
-| --- | --- |
-| [CLI](cli/README.md) | Scope and acceptance guidance for future command-line utilities |
-| [Testing](testing/README.md) | Scope and acceptance guidance for future contract-testing tools |
-| [Deployment](deployment/README.md) | Scope and safety expectations for future deployment helpers |
-| [Examples](docs/examples/README.md) | Guidance for adding verifiable Soroban examples |
-| [Contributing](CONTRIBUTING.md) | How to propose, implement, and review changes |
+| Package | Description |
+|---|---|
+| `@soroban-dev/types` | Shared entity, DTO, and enum type definitions |
+| `@soroban-dev/errors` | Typed error classes for Soroban RPC and contract failures |
+| `@soroban-dev/utils` | Shared utilities: encoding, formatting, retry logic |
+| `@soroban-dev/client` | Typed RPC client for the Soroban JSON-RPC API |
+| `@soroban-dev/network` | Network config, passphrase constants, and horizon helpers |
+| `@soroban-dev/contract` | Contract invocation, simulation, and footprint helpers |
+| `@soroban-dev/transaction` | Transaction building, signing, and submission helpers |
+| `@soroban-dev/wallet` | Wallet connection and signing (Freighter, Albedo, WalletConnect) |
+| `@soroban-dev/deploy` | Contract deployment and upgrade workflows |
+| `@soroban-dev/test` | Testing utilities: mocks, fixtures, and a local sandbox helper |
+| `@soroban-dev/react` | React hooks (TanStack Query) + `<SorobanProvider>` |
+| `@soroban-dev/cli` | CLI for scaffolding, building, and deploying Soroban contracts |
 
 ## Getting started
 
-This repository has no runtime dependencies or installation step. To explore it:
-
 ```bash
+# Requires Node ≥ 20 and pnpm ≥ 9
 git clone https://github.com/Northbound-Dev/soroban-dev-tools.git
 cd soroban-dev-tools
+pnpm install
+pnpm build      # build every package (topological order)
+pnpm typecheck  # strict TypeScript across the workspace
+pnpm test       # run the vitest suites
 ```
 
-If you are contributing a tool or example that interacts with Soroban, install the current [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli) and the toolchain required by that contribution. Keep setup instructions specific to the feature; do not assume every contributor needs Rust, Node.js, or a network account.
+## Quick example
+
+```ts
+import { SorobanClient } from '@soroban-dev/client';
+import { TESTNET } from '@soroban-dev/network';
+
+const client = new SorobanClient({ network: TESTNET });
+
+// Simulate a contract call
+const result = await client.simulateTransaction({
+  contractId: 'C...',
+  method: 'transfer',
+  args: [sourceAccount, destAccount, amount],
+});
+```
 
 ## Contributing
 
-Small, reviewable contributions are welcome. Start with the [contribution guide](CONTRIBUTING.md), describe the user problem and proposed outcome in an issue, and agree on scope before building a new tool. Documentation and reproducible examples are valuable contributions too.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Small, reviewable pull requests are
+welcome. Start with an issue to agree on scope before building.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+[MIT](LICENSE)

@@ -1,0 +1,56 @@
+{
+  "name": "soroban-dev-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The official TypeScript developer toolkit for building, testing, and deploying Soroban smart contracts on Stellar.",
+  "license": "MIT",
+  "author": "Soroban Dev Tools Contributors",
+  "homepage": "https://github.com/Northbound-Dev/soroban-dev-tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Northbound-Dev/soroban-dev-tools.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/*\" run build",
+    "typecheck": "pnpm -r --filter \"./packages/*\" run typecheck",
+    "test": "pnpm -r --filter \"./packages/*\" run test",
+    "lint": "eslint \"packages/*/src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"packages/*/src/**/*.{ts,tsx}\"",
+    "clean": "pnpm -r exec rimraf dist .tsbuildinfo node_modules/.cache"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.5",
+    "@typescript-eslint/eslint-plugin": "8.19.1",
+    "@typescript-eslint/parser": "8.19.1",
+    "eslint": "8.57.1",
+    "eslint-config-prettier": "9.1.0",
+    "prettier": "3.4.2",
+    "rimraf": "6.0.1",
+    "tsup": "8.3.5",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8"
+  },
+  "dependencies": {
+    "@soroban-dev/cli": "workspace:*",
+    "@soroban-dev/client": "workspace:*",
+    "@soroban-dev/contract": "workspace:*",
+    "@soroban-dev/deploy": "workspace:*",
+    "@soroban-dev/errors": "workspace:*",
+    "@soroban-dev/network": "workspace:*",
+    "@soroban-dev/react": "workspace:*",
+    "@soroban-dev/test": "workspace:*",
+    "@soroban-dev/transaction": "workspace:*",
+    "@soroban-dev/types": "workspace:*",
+    "@soroban-dev/utils": "workspace:*",
+    "@soroban-dev/wallet": "workspace:*"
+  }
+}

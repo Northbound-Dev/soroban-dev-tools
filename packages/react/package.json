@@ -1,0 +1,40 @@
+{
+  "name": "@soroban-dev/react",
+  "version": "0.1.0",
+  "description": "React hooks (TanStack Query) and <SorobanProvider> for Soroban applications.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "@tanstack/react-query": ">=5.0.0"
+  },
+  "dependencies": {
+    "@soroban-dev/client": "workspace:*",
+    "@soroban-dev/types": "workspace:*",
+    "@soroban-dev/wallet": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.18",
+    "tsup": "8.3.5",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8"
+  }
+}

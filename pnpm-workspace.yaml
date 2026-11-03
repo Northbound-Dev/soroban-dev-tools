@@ -1,0 +1,15 @@
+packages:
+  - "packages/*"
+
+verifyDepsBeforeRun: false
+
+allowBuilds:
+  esbuild: true
+
+onlyBuiltDependencies:
+  - esbuild
+
+# Examples are intentionally excluded from the workspace so `pnpm install` at the
+# root stays lightweight and the build/typecheck/test gates cover only shippable
+# packages. Each example under examples/ is a standalone project that consumes the
+# published @soroban-dev/* packages (see examples/README.md).

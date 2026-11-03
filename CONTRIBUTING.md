@@ -1,32 +1,53 @@
-# Contributing
+# Contributing to Soroban Dev Tools
 
-Thank you for helping make Soroban development easier. This repository is currently a documentation-first scaffold, so please distinguish existing functionality from proposals: there is no package to install and no project-wide test suite yet.
+Thanks for your interest in improving the TypeScript toolkit for Soroban smart
+contract development on Stellar. We develop in the open and welcome issues,
+discussion, and pull requests.
 
-## Before you start
+## Getting started
 
-1. Read the relevant area guide: [CLI](cli/README.md), [testing](testing/README.md), [deployment](deployment/README.md), or [examples](docs/examples/README.md).
-2. Open an issue describing the user problem, who it affects, and a small, testable outcome. For a new tool, first agree on its interface, supported environment, and maintenance expectations.
-3. Avoid overlapping work by checking existing issues and pull requests before starting.
+```bash
+git clone https://github.com/Northbound-Dev/soroban-dev-tools.git
+cd soroban-dev-tools
+pnpm install
+pnpm build      # build every package (topological order)
+pnpm typecheck  # strict TypeScript across the workspace
+pnpm test       # run the vitest suites
+```
 
-## Make a change
+This is a [pnpm](https://pnpm.io) workspace monorepo. Each package under
+`packages/*` is independently versioned and depends on its siblings through the
+`workspace:*` protocol. `@soroban-dev/types`, `@soroban-dev/errors`, and
+`@soroban-dev/utils` sit at the bottom of the dependency graph — everything else
+builds on top.
 
-1. Fork the repository and create a focused branch.
-2. Keep changes small and explain any new dependencies or supported platforms.
-3. Update the relevant guide whenever a feature, command, requirement, or limitation changes.
-4. Verify every documented command against the stated tool version and a clean environment. Do not document placeholder commands as working features.
-5. For contract or deployment examples, use a local environment or Stellar testnet. Never include secret keys, seed phrases, tokens, or real account credentials.
-6. Review the rendered Markdown and links, then open a pull request with the problem, solution, verification performed, and any known limitations.
+## Ground rules
 
-## Pull request expectations
+- **Strict TypeScript.** `strict` is on and `any` is banned
+  (`@typescript-eslint/no-explicit-any`). Prefer generics and precise types.
+- **Keep packages thin.** Resource packages wrap RPC endpoints; they never
+  encode business logic or make assumptions about the calling environment.
+- **Conventional Commits.** `feat:`, `fix:`, `docs:`, `test:`, `refactor:`,
+  `chore:`, etc.
+- **Tests are required** for new behaviour. Mock `fetch` and Soroban RPC
+  responses; never call a live network in unit tests.
+- **Public API is documented.** Exported functions carry TSDoc with parameters,
+  return type, and an example.
+- **No secrets in source.** Stellar secret keys, mnemonics, and API tokens must
+  never appear in code, tests, or examples. Use environment variables and
+  document them clearly.
 
-- Address one concern per pull request where practical.
-- Include tests for executable behavior. If a change is documentation-only, say so and check its links and examples.
-- Keep user-facing documentation accurate about what is implemented, planned, and not supported.
-- Do not claim mainnet readiness, security guarantees, or compatibility that has not been independently verified.
-- Respond to review feedback and keep the pull request focused.
+## Pull request checklist
 
-## Reporting a bug or proposing a feature
+1. `pnpm build && pnpm typecheck && pnpm test` all pass.
+2. New/changed public API is exported from the package `index.ts` and typed.
+3. Tests cover the happy path and at least one error path.
+4. Version bumps follow [SemVer](https://semver.org).
 
-Include the affected tool and version (if applicable), environment, expected and actual behavior, and minimal reproduction steps. For feature proposals, explain the target user and why existing Stellar/Soroban tooling does not already meet the need.
+## Branch strategy
 
-By contributing, you agree that your contributions are provided under the [MIT License](LICENSE).
+`main` is always releasable. Use `feature/*` and `fix/*` branches and open PRs
+against `main`.
+
+By contributing you agree that your contributions are licensed under the
+[MIT License](LICENSE).

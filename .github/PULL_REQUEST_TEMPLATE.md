@@ -1,14 +1,28 @@
-## What problem does this solve?
+## Summary
 
-<!-- Describe the user need and link the related issue, if there is one. -->
+<!-- One paragraph: what does this PR do and why? -->
 
-## What changed?
+## Changes
 
-<!-- Summarize the implementation or documentation change and any limitations. -->
+<!-- Bullet-point list of what changed and in which package. -->
 
-## Verification
+- 
 
-- [ ] Tests were added or run; if this is documentation-only, that is stated.
-- [ ] Documented commands and examples were checked against the stated prerequisites.
-- [ ] User-facing docs distinguish implemented functionality from proposals.
-- [ ] No secrets, credentials, or unintended network actions are included.
+## Testing
+
+<!-- How did you verify this works? What new tests were added? -->
+
+- [ ] `pnpm build` passes
+- [ ] `pnpm typecheck` passes
+- [ ] `pnpm test` passes
+- [ ] New behaviour is covered by unit tests
+
+## Breaking changes
+
+<!-- List any breaking API changes, or write "None". -->
+
+None
+
+## Related issues
+
+<!-- Closes #N, or "N/A" -->
