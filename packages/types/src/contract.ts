@@ -44,6 +44,54 @@ export interface ContractInvocation {
 }
 
 /**
+ * A contract (or system) event emitted on-chain and returned by the Soroban
+ * RPC `getEvents` method.
+ */
+export interface ContractEvent {
+  /** Event source type. `"contract"` for user events, `"system"` for diagnostic events. */
+  type: 'contract' | 'system';
+  /** Ledger sequence in which the event was emitted. */
+  ledger: LedgerSequence;
+  /** ISO-8601 timestamp of when `ledger` was closed. */
+  ledgerClosedAt?: string;
+  /** Contract that emitted the event, when applicable. */
+  contractId?: ContractId;
+  /** Stable identifier for this event (also usable as a paging token). */
+  id?: string;
+  /** XDR-encoded ScVal topic values, in emission order. */
+  topic: string[];
+  /** XDR-encoded ScVal event body. */
+  value: string;
+  /** Opaque paging token for this event. */
+  pagingToken?: string;
+  /** Whether the event was emitted during a successful contract call. */
+  inSuccessfulContractCall?: boolean;
+}
+
+/**
+ * Options accepted by `SorobanClient.watchContractEvents`.
+ */
+export interface WatchContractEventsOptions {
+  /** Contract whose events should be delivered. */
+  contractId: ContractId;
+  /**
+   * Optional topic filter. Each entry corresponds to a topic position and is
+   * matched against the XDR-encoded topic at that position; `null` matches any
+   * value at that position.
+   */
+  topics?: (string | null)[][];
+  /** Ledger sequence to start polling from. Defaults to the RPC's latest ledger. */
+  startLedger?: LedgerSequence;
+  /** Polling interval in milliseconds. Default: 6_000. */
+  pollIntervalMs?: number;
+  /**
+   * Invoked when a poll attempt fails. Polling errors are never thrown from
+   * the watch loop; without this callback they are silently swallowed.
+   */
+  onError?: (error: Error) => void;
+}
+
+/**
  * Result of simulating a contract invocation.
  */
 export interface SimulationResult {
