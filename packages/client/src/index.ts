@@ -1,6 +1,6 @@
 import { RpcError, TimeoutError } from '@soroban-dev/errors';
 import { resolveNetworkConfig } from '@soroban-dev/network';
-import type { NetworkConfig, SimulationResult, ContractInvocation, SendTransactionResponse, TransactionEnvelope, TransactionHash } from '@soroban-dev/types';
+import type { NetworkConfig, SimulationResult, ContractInvocation, SendTransactionResponse, TransactionEnvelope, TransactionHash, ContractEvent, WatchContractEventsOptions } from '@soroban-dev/types';
 import { withRetry } from '@soroban-dev/utils';
 
 export interface SorobanClientOptions extends NetworkConfig {
@@ -158,5 +158,107 @@ export class SorobanClient {
   async getTransaction(hash: TransactionHash): Promise<SendTransactionResponse> {
     return this.call<SendTransactionResponse>('getTransaction', { hash });
   }
+
+  /**
+   * Polls `getEvents` on the RPC and delivers matching contract events to
+   * `callback` as they appear on-chain.
+   *
+   * The first poll starts at `options.startLedger` (or the RPC's latest ledger
+   * when omitted). Each subsequent poll resumes from one ledger past the last
+   * delivered event, so no event is delivered twice. Polling errors are never
+   * thrown from the watch loop — they are reported through `options.onError`
+   * instead. Call the returned function to stop polling.
+   *
+   * @param options - Contract filter, cursor, and polling configuration.
+   * @param callback - Invoked once per newly observed event, in ledger order.
+   * @returns A `stop()` function that cancels the poll loop. Calling it more
+   *   than once is a no-op.
+   *
+   * @example
+   * ```ts
+   * const stop = client.watchContractEvents(
+   *   {
+   *     contractId: 'C...',
+   *     startLedger: 1_000_000,
+   *     pollIntervalMs: 6_000,
+   *     onError: (err) => console.error('event poll failed', err),
+   *   },
+   *   (event) => console.log(event.ledger, event.topic, event.value),
+   * );
+   *
+   * // Later, when the subscription is no longer needed:
+   * stop();
+   * ```
+   */
+  watchContractEvents(
+    options: WatchContractEventsOptions,
+    callback: (event: ContractEvent) => void,
+  ): () => void {
+    const pollIntervalMs = options.pollIntervalMs ?? 6_000;
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let nextStartLedger = options.startLedger;
+
+    const poll = async (): Promise<void> => {
+      if (stopped) return;
+
+      try {
+        const params: Record<string, unknown> = {
+          filters: [
+            {
+              type: 'contract',
+              contractIds: [options.contractId],
+              ...(options.topics ? { topics: options.topics } : {}),
+            },
+          ],
+          pagination: { limit: 100 },
+        };
+        if (nextStartLedger !== undefined) {
+          params.startLedger = nextStartLedger;
+        }
+
+        const result = await this.call<GetEventsResult>('getEvents', params);
+        if (stopped) return;
+
+        const events = result.events ?? [];
+        for (const event of events) {
+          if (stopped) return;
+          callback(event);
+        }
+
+        const last = events[events.length - 1];
+        if (last) {
+          nextStartLedger = last.ledger + 1;
+        }
+      } catch (err) {
+        if (stopped) return;
+        options.onError?.(err instanceof Error ? err : new Error(String(err)));
+      } finally {
+        if (!stopped) {
+          timer = setTimeout(() => void poll(), pollIntervalMs);
+        }
+      }
+    };
+
+    const stop = (): void => {
+      stopped = true;
+      if (timer !== undefined) {
+        clearTimeout(timer);
+        timer = undefined;
+      }
+    };
+
+    void poll();
+
+    return stop;
+  }
+}
+
+/** Shape of the Soroban RPC `getEvents` result. */
+interface GetEventsResult {
+  events: ContractEvent[];
+  latestLedger: number;
+  latestLedgerCloseTime?: string;
+  cursor?: string;
 }
 
