@@ -4,8 +4,8 @@ import type {
   SignTransactionRequest,
   SignTransactionResult,
   WalletSession,
+  WalletType,
 } from '@soroban-dev/types';
-import { WalletType } from '@soroban-dev/types';
 
 /**
  * Abstract wallet adapter interface.
