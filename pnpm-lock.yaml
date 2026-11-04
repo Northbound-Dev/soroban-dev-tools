@@ -295,6 +295,10 @@ importers:
         version: 2.1.8(@types/node@22.10.5)
 
   packages/utils:
+    dependencies:
+      '@soroban-dev/errors':
+        specifier: workspace:*
+        version: link:../errors
     devDependencies:
       tsup:
         specifier: 8.3.5
