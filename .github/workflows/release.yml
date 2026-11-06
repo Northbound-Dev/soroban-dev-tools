@@ -1,0 +1,188 @@
+name: Release CLI
+
+# Release flow: merge the version bump to main, then push a tag that matches
+# packages/cli/package.json (e.g. `git tag v0.1.0 && git push origin v0.1.0`).
+# Only tags publish. Pull requests never run this workflow.
+#
+# Validation flow (no release): Actions -> "Release CLI" -> "Run workflow" on a
+# branch. `dry_run` defaults to true, so artifacts are built, checksummed and
+# uploaded to the workflow run without creating a GitHub Release.
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build and checksum artifacts without publishing a GitHub Release'
+        type: boolean
+        default: true
+
+# Default to read-only for every job; only the publish job opts into
+# `contents: write`, and only for an existing tag.
+permissions:
+  contents: read
+
+concurrency:
+  group: cli-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '22.12.0'
+  PNPM_VERSION: '9.15.0'
+  BUN_VERSION: '1.4.4'
+
+jobs:
+  build:
+    name: Build release artifacts
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Resolve version and validate tag
+        id: version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          cli_version="$(node -p "require('./packages/cli/package.json').version")"
+
+          if [ "$REF_TYPE" = "tag" ]; then
+            expected="v${cli_version}"
+            if [ "$REF_NAME" != "$expected" ]; then
+              echo "::error::Tag $REF_NAME does not match packages/cli/package.json ($expected). Bump the CLI version and retag."
+              exit 1
+            fi
+            echo "Releasing $REF_NAME"
+          else
+            echo "::notice::Validation run on $REF_NAME (dry run). No release will be published."
+          fi
+
+          echo "version=${cli_version}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${cli_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Build CLI binaries and checksums
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: scripts/build-cli-binaries.sh "$VERSION" dist-binaries
+
+      - name: Verify checksums and smoke-test the Linux binary
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          cd dist-binaries
+          sha256sum -c "SHA256SUMS-v${VERSION}.txt"
+
+          # Hermetic smoke test: the binary must run without Node installed and
+          # report its commands. It must not touch the network here.
+          bin="./soroban-dev-v${VERSION}-linux-x64"
+          chmod +x "$bin"
+          set +e
+          output="$("$bin" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$output"
+          if [ "$status" -ne 1 ] || ! grep -q 'Available commands: health' <<<"$output"; then
+            echo "::error::Smoke test failed for $bin (exit $status)"
+            exit 1
+          fi
+
+      - name: Record toolchain and checksums in the job summary
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          {
+            echo "### soroban-dev CLI v${VERSION}"
+            echo
+            echo "- Node $(node --version) / pnpm $(pnpm --version) / Bun $(bun --version)"
+            echo "- Runner: ${ImageOS:-unknown} ${RUNNER_ARCH:-}"
+            echo
+            echo '```'
+            cat "dist-binaries/SHA256SUMS-v${VERSION}.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: soroban-dev-cli-v${{ steps.version.outputs.version }}
+          path: dist-binaries/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish GitHub Release
+    needs: build
+    # Only tags publish: a plain push of a tag, or an explicit non-dry-run
+    # dispatch of an existing tag. Branch dispatches stop at the build job.
+    if: github.ref_type == 'tag' && (github.event_name == 'push' || inputs.dry_run == false)
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: soroban-dev-cli-v${{ needs.build.outputs.version }}
+          path: release-assets
+
+      - name: Prepare release notes
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          TAG: ${{ needs.build.outputs.tag }}
+        run: |
+          set -euo pipefail
+          sed -e "s|__VERSION__|${VERSION}|g" -e "s|__TAG__|${TAG}|g" \
+            docs/release-notes-template.md > release-notes.md
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --title "soroban-dev CLI $TAG" \
+            --notes-file release-notes.md \
+            release-assets/*
