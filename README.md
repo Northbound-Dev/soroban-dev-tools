@@ -29,6 +29,13 @@ integrate Soroban into their own applications and development workflows.
 | `@soroban-dev/react` | React hooks (TanStack Query) + `<SorobanProvider>` |
 | `@soroban-dev/cli` | CLI for scaffolding, building, and deploying Soroban contracts |
 
+### CLI binaries
+
+Prebuilt `soroban-dev` binaries for Linux, macOS, and Windows are attached to
+each tagged [release](https://github.com/Northbound-Dev/soroban-dev-tools/releases).
+See [docs/cli-release.md](docs/cli-release.md) for installation, checksum
+verification, supported targets, and limitations.
+
 ## Getting started
 
 ```bash
