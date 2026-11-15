@@ -1,10 +1,13 @@
 # CLI
 
 The CLI lives in [`packages/cli`](../packages/cli) and is published as
-`@soroban-dev/cli`, which provides the `soroban-dev` command. It currently
-implements one command:
+`@soroban-dev/cli`, which provides the `soroban-dev` command (also usable as `sdt` when aliased or linked). It currently implements two commands:
 
 ```bash
+# Scaffold an offline Rust/Soroban smart contract project
+soroban-dev init <project-name> [--dir <parent-directory>]
+
+# Check Soroban RPC endpoint health
 soroban-dev health [--network testnet] [--rpc-url <url>]
 ```
 
@@ -16,20 +19,35 @@ The binaries include their own runtime, so no Node.js install is required. See
 [docs/cli-release.md](../docs/cli-release.md) for supported targets, checksum
 verification, upgrading, and limitations.
 
-To run the CLI from source instead:
+To build and run the CLI from source instead (requires Node.js `>=20.0.0` and `pnpm@9.15.0`):
 
 ```bash
 pnpm install
 pnpm build
+node packages/cli/dist/bin.js --help
+node packages/cli/dist/bin.js init my-counter
 node packages/cli/dist/bin.js health --network testnet
 ```
 
-## Contribution direction
+## `init <project-name>` (offline project scaffolder)
 
-Potential contributions include project scaffolding, repeatable local-development
-workflows, and network configuration helpers. Before starting a tool, open an
-issue to agree on its user, supported platforms, command interface, and
-maintenance owner.
+`soroban-dev init <project-name>` creates a minimal, buildable Rust/Soroban contract project on disk without making any network requests or generating secret credentials:
+
+- `Cargo.toml` — configured with `crate-type = ["cdylib"]`, `soroban-sdk = "22.0.0"`, and release WASM size optimizations.
+- `src/lib.rs` — stateful counter contract (`increment`, `increment_by`, `get_count`, `reset`) with unit tests covering normal state transitions, zero-step validation (`Error::InvalidStep`), and `u32::MAX` overflow checks (`Error::Overflow`).
+- `README.md` — prerequisites, offline `cargo test` and WASM build commands, and an explicit unaudited notice.
+- `.gitignore` — standard Rust `/target` and `.env` exclusions.
+
+### Validation and safety guarantees
+
+- Project names must start with a lowercase ASCII letter and contain only `[a-z0-9_-]` (up to 63 characters), and must not be a reserved Rust keyword.
+- Existing non-empty destination directories are never overwritten.
+- Scaffolding runs 100% offline and never prompts for or writes secret keys.
+
+### Supported vs. future CLI scope
+
+- **Supported today:** `init <project-name>` (offline contract project scaffolding) and `health` (RPC health check).
+- **Not included in `init`:** contract deployment, wallet/key management, automated testnet account funding, or Mainnet workflows.
 
 ## Acceptance checklist for a CLI contribution
 
