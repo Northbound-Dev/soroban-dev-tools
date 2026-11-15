@@ -1,6 +1,10 @@
 # Deployment utilities
 
-This directory is reserved for future helpers for deploying Soroban contracts. **There are currently no deployment scripts or deployment managers in this repository.**
+This directory documents safe, repeatable workflows for deploying Soroban contracts and is reserved for future deployment helpers. **There are currently no automated deployment scripts or deployment managers in this directory.**
+
+## Walkthroughs and Guides
+
+- **[Verified Local-to-Testnet Soroban Deployment Walkthrough](./testnet-walkthrough.md)** — End-to-end guide covering prerequisites, offline unit testing, WASM compilation, disposable Testnet account setup, explicit `--network testnet` deployment, read/write contract invocation, TTL restoration, and troubleshooting using the official Stellar CLI.
 
 ## Contribution direction
 
