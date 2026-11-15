@@ -318,6 +318,9 @@ importers:
       '@soroban-dev/types':
         specifier: workspace:*
         version: link:../types
+      '@stellar/freighter-api':
+        specifier: 1.7.1
+        version: 1.7.1
     devDependencies:
       tsup:
         specifier: 8.3.5
@@ -814,6 +817,9 @@ packages:
     resolution: {integrity: sha512-RJZnrwTWj7Iq2ooBwoGbDdC65tDwYawneGcAfFMJqVUrRZMcskka6nTkBpXR/47G7kzn3EW2qupExnaBy11vwg==}
     cpu: [x64]
     os: [win32]
+
+  '@stellar/freighter-api@1.7.1':
+    resolution: {integrity: sha512-XvPO+XgEbkeP0VhP0U1edOkds+rGS28+y8GRGbCVXeZ9ZslbWqRFQoETAdX8IXGuykk2ib/aPokiLc5ZaWYP7w==}
 
   '@tanstack/query-core@5.105.3':
     resolution: {integrity: sha512-v1rbNy7MB/4Akth7CQH+CerV13K7Ok9hAusEsfz4sCjDdu3/kOSJPoWfoB+YjdEX1eBFBWKNAGE5nqZCgdlHDw==}
@@ -1994,6 +2000,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.67.4':
     optional: true
+
+  '@stellar/freighter-api@1.7.1': {}
 
   '@tanstack/query-core@5.105.3': {}
 

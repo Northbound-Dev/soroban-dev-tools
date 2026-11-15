@@ -94,4 +94,4 @@ export async function connectWallet(opts: ConnectWalletOptions): Promise<WalletS
   return adapter.connect(opts);
 }
 
-
+export { FreighterAdapter } from './adapters/freighter';
