@@ -1,6 +1,8 @@
 # Soroban examples
 
-There are no runnable examples in this directory yet. The example commands previously listed here referred to tools that are not part of this repository; they have been removed to avoid implying that those commands are available.
+Runnable reference examples live under [`examples/`](../../examples/README.md):
+
+- **[`examples/counter`](../../examples/counter/README.md)** — Minimal Rust/Soroban counter contract (`soroban-sdk 22.0.0`) demonstrating instance storage, typed contract errors (`InvalidStep`, `Overflow`), and deterministic local unit tests (`cargo test`).
 
 ## Adding an example
 
